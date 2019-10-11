@@ -21,6 +21,6 @@
         android:gravity="center"
         android:textSize="16dp"
         android:maxLines="5"
-        android:textColor="#80CC5A5A"/>
+        android:textColor="#00C5E0"/>
         
 </FrameLayout>
