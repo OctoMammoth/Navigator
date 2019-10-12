@@ -388,16 +388,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 foundMe = 0;
             }
             deviceLocation = location;
-//            ArrayList<LatLng> polygon = new ArrayList<LatLng>();
-//                    polygon.add(new LatLng(62.026747,129.726417));
-//                    polygon.add(new LatLng(62.027603,129.728713));
-//                    polygon.add(new LatLng(62.02644,129.730859));
-//                    polygon.add(new LatLng(62.025711,129.728365));
             ArrayList<LatLng> polygon = new ArrayList<LatLng>();
-            polygon.add(new LatLng(62.032539479647006, 129.7498384226608));
-            polygon.add(new LatLng(62.0323935657187, 129.74991888893123));
-            polygon.add(new LatLng(62.03242627062555, 129.75037218225475));
-            polygon.add(new LatLng(62.032580989515985, 129.75031853807445));
+                    polygon.add(new LatLng(62.026805627471, 129.72752232387006));
+                    polygon.add(new LatLng(62.026332573402804, 129.72839672400892));
+                    polygon.add(new LatLng(62.026740205538026, 129.72926575972974));
+                    polygon.add(new LatLng(62.02713021882744, 129.72843427493513));
+//            ArrayList<LatLng> polygon = new ArrayList<LatLng>();
+//            polygon.add(new LatLng(62.032539479647006, 129.7498384226608));
+//            polygon.add(new LatLng(62.0323935657187, 129.74991888893123));
+//            polygon.add(new LatLng(62.03242627062555, 129.75037218225475));
+//            polygon.add(new LatLng(62.032580989515985, 129.75031853807445));
             boolean asd = containsLocation(new LatLng(location.getLatitude(),location.getLongitude()),polygon,false);
             if (asd)
                 openNavigator();
