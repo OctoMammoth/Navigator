@@ -39,9 +39,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.navigine.naviginesdk.DeviceInfo;
 
 
 import java.sql.Time;
@@ -64,6 +66,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int PERMISSION_LOCATION_REQUEST_CODE = 100;
     private List<LatLng> latLngList;
     private MarkerOptions yourLocationMarker;
+    private int pathTopic = 0;
 
     int foundMe = 1;
     Location deviceLocation;
@@ -105,10 +108,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Log.d(TAG, "Marker number " + latLngList.size());
                     mMap.addMarker(new MarkerOptions().position(latLng));
                     LatLng defaultLocation = new LatLng(deviceLocation.getLatitude(),deviceLocation.getLongitude());
-                    LatLng destinationLocation = latLng;
                     //use Google Direction API to get the route between these Locations
                     String directionApiPath = Helper.getUrl(String.valueOf(defaultLocation.latitude), String.valueOf(defaultLocation.longitude),
-                            String.valueOf(destinationLocation.latitude), String.valueOf(destinationLocation.longitude));
+                            String.valueOf(latLng.latitude), String.valueOf(latLng.longitude),pathTopic);
                     Log.d(TAG, "Path " + directionApiPath);
                     getDirectionFromDirectionApiServer(directionApiPath);
                 }
@@ -127,10 +129,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         handler.removeCallbacks(runnable); //stop handler when activity not visible
         super.onPause();
     }
+    Marker draggableMarker;
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         LatLng russia = new LatLng(49.7703401,68.8646444);
+        draggableMarker = mMap.addMarker(new MarkerOptions().position(russia).visible(true).draggable(true));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(russia));
         mMap.setMyLocationEnabled(true);
         mMap.setOnMapClickListener(this);
@@ -140,7 +144,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
     @Override
     public void onMapClick(LatLng latLng) {
-        if(latLngList.size() > 0){
+        if (latLngList.size() > 0) {
             refreshMap(mMap);
             latLngList.clear();
         }
@@ -148,11 +152,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         latestPos = latLng;
         Log.d(TAG, "Marker number " + latLngList.size());
         mMap.addMarker(new MarkerOptions().position(latLng));
-        LatLng defaultLocation = new LatLng(deviceLocation.getLatitude(),deviceLocation.getLongitude());
-        LatLng destinationLocation = latLng;
+        LatLng defaultLocation = new LatLng(deviceLocation.getLatitude(), deviceLocation.getLongitude());
         //use Google Direction API to get the route between these Locations
         String directionApiPath = Helper.getUrl(String.valueOf(defaultLocation.latitude), String.valueOf(defaultLocation.longitude),
-                String.valueOf(destinationLocation.latitude), String.valueOf(destinationLocation.longitude));
+                String.valueOf(latLng.latitude), String.valueOf(latLng.longitude),pathTopic);
         Log.d(TAG, "Path " + directionApiPath);
         getDirectionFromDirectionApiServer(directionApiPath);
     }
@@ -300,6 +303,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         };
     }
     private List<LatLng> getDirectionPolylines(List<RouteObject> routes){
+        Log.d("Routes", routes.get(0).getLegs().get(0).getDistance().getText());
+        Log.d("Routes", routes.get(0).getLegs().get(0).getDuration().getText());
         List<LatLng> directionList = new ArrayList<LatLng>();
         for(RouteObject route : routes){
             List<LegsObject> legs = route.getLegs();
@@ -369,10 +374,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-
     @Override
     public void onMyLocationClick(@NonNull Location location) {
-        Toast.makeText(this, "Current location:\n" + location, Toast.LENGTH_LONG).show();
+
     }
 
     @Override
