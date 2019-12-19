@@ -54,7 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final String TAG = MapsActivity.class.getSimpleName();
     Handler handler = new Handler();
     Runnable runnable;
-    int delay = 7*1000; //Delay for 15 seconds.  One second = 1000 milliseconds.
+    int delay = 3*900; //Delay for 15 seconds.  One second = 1000 milliseconds.
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
     private LocationRequest mLocationRequest;
@@ -72,6 +72,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE},101);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         latLngList = new ArrayList<LatLng>();
@@ -243,8 +247,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
     protected LocationRequest createLocationRequest() {
         LocationRequest mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(5000);
-        mLocationRequest.setFastestInterval(3000);
+        mLocationRequest.setInterval(3000);
+        mLocationRequest.setFastestInterval(2000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         return mLocationRequest;
     }
@@ -292,7 +296,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            };
+            }
         };
     }
     private List<LatLng> getDirectionPolylines(List<RouteObject> routes){
@@ -325,11 +329,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true);
         options.addAll(positions);
         Polyline polyline = map.addPolyline(options);
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(positions.get(1).latitude, positions.get(1).longitude))
-                .zoom(17)
-                .build();
-        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+//        CameraPosition cameraPosition = new CameraPosition.Builder()
+//                .target(new LatLng(positions.get(1).latitude, positions.get(1).longitude))
+//                .zoom(17)
+//                .build();
+//        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
     /**
      * Method to decode polyline points
