@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -43,10 +44,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.navigine.naviginesdk.DeviceInfo;
 
-
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,12 +73,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_maps);
+        RadioButton radio0 = findViewById(R.id.radioButton);
+        radio0.setOnClickListener(radioButtonClickListener);
+
+        RadioButton radio1 = findViewById(R.id.radioButton2);
+        radio1.setOnClickListener(radioButtonClickListener);
+
+        RadioButton radio2 = findViewById(R.id.radioButton3);
+        radio2.setOnClickListener(radioButtonClickListener);
+
+        RadioButton radio3 = findViewById(R.id.radioButton4);
+        radio3.setOnClickListener(radioButtonClickListener);
+
+        RadioButton radio4 = findViewById(R.id.radioButton5);
+        radio4.setOnClickListener(radioButtonClickListener);
+
+        RadioButton radio5 = findViewById(R.id.radioButton6);
+        radio5.setOnClickListener(radioButtonClickListener);
+
+        RadioButton radio6 = findViewById(R.id.radioButton7);
+        radio6.setOnClickListener(radioButtonClickListener);
+
+        RadioButton radio7 = findViewById(R.id.radioButton8);
+        radio7.setOnClickListener(radioButtonClickListener);
+
         ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.READ_EXTERNAL_STORAGE,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE},101);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+
         latLngList = new ArrayList<LatLng>();
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -93,6 +116,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
         enterSchool = findViewById(R.id.button_1);
     }
+    View.OnClickListener radioButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            RadioButton rb = (RadioButton)v;
+            switch (rb.getId()) {
+                case R.id.radioButton: pathTopic = 0;
+                    break;
+                case R.id.radioButton2: pathTopic =1;
+                    break;
+                case R.id.radioButton3: pathTopic =2;
+                    break;
+                case R.id.radioButton4: pathTopic =3;
+                    break;
+                case R.id.radioButton5: pathTopic =4;
+                    break;
+                case R.id.radioButton6: pathTopic =5;
+                    break;
+                case R.id.radioButton7: pathTopic =6;
+                    break;
+                case R.id.radioButton8: pathTopic =7;
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
     @Override
     protected void onResume() {
         //start handler as activity become visible
@@ -223,6 +272,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
+
     private void showPermissionAlert(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.permission_request_title);
@@ -397,10 +447,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             deviceLocation = location;
             ArrayList<LatLng> polygon = new ArrayList<LatLng>();
-                    polygon.add(new LatLng(62.026805627471, 129.72752232387006));
-                    polygon.add(new LatLng(62.026332573402804, 129.72839672400892));
-                    polygon.add(new LatLng(62.026740205538026, 129.72926575972974));
-                    polygon.add(new LatLng(62.02713021882744, 129.72843427493513));
+
+            polygon.add(new LatLng(55.754318,37.612345));
+            polygon.add(new LatLng(55.754194,37.613128));
+            polygon.add(new LatLng(55.752669,37.612345));
+            polygon.add(new LatLng(55.752799,37.611551));
+
+
 //            ArrayList<LatLng> polygon = new ArrayList<LatLng>();
 //            polygon.add(new LatLng(62.032539479647006, 129.7498384226608));
 //            polygon.add(new LatLng(62.0323935657187, 129.74991888893123));

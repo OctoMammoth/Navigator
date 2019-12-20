@@ -52,7 +52,7 @@ public class MainActivity extends Activity
   private static final int      ERROR_MESSAGE_TIMEOUT   = 5000; // milliseconds
   private static final boolean  ORIENTATION_ENABLED     = true; // Show device orientation?
   private static final boolean  NOTIFICATIONS_ENABLED   = true; // Show zone notifications?
-  
+  private static double pathLenght = 0;
   // NavigationThread instance
   private NavigationThread mNavigation            = null;
 
@@ -874,6 +874,8 @@ public class MainActivity extends Activity
     if (mDeviceInfo.paths != null && mDeviceInfo.paths.size() > 0)
     {
       RoutePath path = mDeviceInfo.paths.get(0);
+      pathLenght = path.length/1.38889/1.5;
+      Log.d("Path Duration", String.valueOf(pathLenght));
       if (path.points.size() >= 2)
       {
         paint.setColor(solidColor);
